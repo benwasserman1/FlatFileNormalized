@@ -36,6 +36,9 @@ public class CSVParser {
 
             Iterable<CSVRecord> records = CSVFormat.EXCEL.parse(in);
 
+            // instantiate sql class
+            Sql query = new Sql(_con);
+
             for (CSVRecord record: records){
                 String Name = record.get(0);
                 String Email = record.get(1);
@@ -55,89 +58,20 @@ public class CSVParser {
                 String Currency = record.get(15);
                 String Amount = record.get(16);
 
-                // Insert into people table
-                PreparedStatement st = _con.prepareStatement("INSERT INTO People(Name, Email, PhoneNumber)" +
-                        "VALUES (?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
-
-                st.setString(1, Name);
-                st.setString(2, Email);
-                st.setString(3, PhoneNumber);
-                st.executeUpdate();
-
-                ResultSet rs_key = st.getGeneratedKeys();
-
-                int p_id = 0;
-                if (rs_key.next()) {
-                    p_id = rs_key.getInt(1);
-                }
-
-                System.out.println("Made it to just before company table");
-
+                // insert into people table
+                int p_id = query.PeopleInsert(Name, Email, PhoneNumber);
 
                 // insert into company table
-                PreparedStatement st1 = _con.prepareStatement("INSERT INTO Company(Name, Street, Country, City, ZipCode)" +
-                        "VALUES (?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
-
-                st1.setString(1, Company);
-                st1.setString(2, CompanyAddress);
-                st1.setString(3, CompanyCountry);
-                st1.setString(4, CompanyCity);
-                st1.setString(5, CompanyZip);
-                st1.executeUpdate();
-
-                ResultSet rs1_key = st1.getGeneratedKeys();
-                int c_id = 0;
-                if (rs1_key.next()) {
-                    c_id = rs1_key.getInt(1);
-                }
-
-
+                int c_id = query.CompanyInsert(Company, CompanyAddress, CompanyCountry, CompanyCity, CompanyZip);
 
                 // insert into jobs table
-                PreparedStatement st3 = _con.prepareStatement("INSERT INTO Jobs(Name, CompanyId)" +
-                        "VALUES (?, ?)", Statement.RETURN_GENERATED_KEYS);
-
-
-                System.out.println(Job);
-                System.out.println(c_id);
-
-                st3.setString(1, Job);
-                st3.setInt(2, c_id);
-                st3.executeUpdate();
-
+                query.JobsInsert(Job, c_id);
 
                 // insert into purchases table
-                PreparedStatement st2 = _con.prepareStatement("INSERT INTO Purchases(Amount, Currency, DatePurchased, PersonId, CompanyId)" +
-                        "VALUES (?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
-
-                float f_amount = Float.parseFloat(Amount);
-                SimpleDateFormat formatter1=new SimpleDateFormat("MM/dd/yy kk:mm");
-                Date date1=formatter1.parse(Time);
-                java.sql.Date sqlDate = new java.sql.Date(date1.getTime());
-
-
-                st2.setFloat(1, f_amount);
-                st2.setString(2, Currency);
-                st2.setDate(3, sqlDate);
-                st2.setInt(4, p_id);
-                st2.setInt(5, c_id);
-                st2.executeUpdate();
+                query.PurchasesInsert(Amount, Currency, Time, p_id, c_id);
 
                 // insert into personalinformation table
-                PreparedStatement st4 = _con.prepareStatement("INSERT INTO PersonalInformation(Street, Country, City, ZipCode, SSN, PersonId)" +
-                        "VALUES (?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
-
-
-                System.out.println(Address);
-
-                st4.setString(1, Address);
-                st4.setString(2, Country);
-                st4.setString(3, City);
-                st4.setString(4, Zip);
-                st4.setString(5, SSN);
-                st4.setInt(6, p_id);
-                st4.executeUpdate();
-
+                query.PersonalInformationInsert(Address, Country, City, Zip, SSN, p_id);
 
             }
         }
