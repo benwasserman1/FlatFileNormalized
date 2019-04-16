@@ -13,8 +13,8 @@ def generate_random_num():
     return result
 
 
-def main(argv, tuples):
-    with open(argv, mode='w') as flat_file:
+def main(tuples):
+    with open("ass.csv", mode='w') as flat_file:
         file_writer = csv.writer(flat_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 
         # write out
@@ -40,5 +40,5 @@ def main(argv, tuples):
         
 
 if __name__ == "__main__":
-    main(sys.argv[1], sys.argv[2])
+    main(sys.argv[1])
 
