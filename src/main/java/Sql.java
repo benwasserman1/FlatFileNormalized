@@ -8,14 +8,17 @@ public class Sql {
 
     private Connection _con;
 
+    // default constructor
     public Sql() {
         _con = null;
     }
 
+    // overloaded constructor, set the connection string
     public Sql(Connection con) {
         _con = con;
     }
 
+    // function to insert a record into the table People
     public int PeopleInsert(String Name, String Email, String PhoneNumber){
         int p_id = 0;
         try {
@@ -42,6 +45,7 @@ public class Sql {
 
     }
 
+    // function to insert a record into the table Company
     public int CompanyInsert(String Name, String Street, String Country, String City, String ZipCode) {
 
         int c_id = 0;
@@ -70,7 +74,7 @@ public class Sql {
 
     }
 
-
+    // function to insert a record into the table Jobs
     public void JobsInsert(String Job, int c_id) {
         try {
             PreparedStatement st3 = _con.prepareStatement("INSERT INTO Jobs(Name, CompanyId)" +
@@ -86,13 +90,14 @@ public class Sql {
         }
     }
 
+    // function to insert a record into the table Purchases
     public void PurchasesInsert(String Amount, String Currency, String DatePurchased, int PersonId, int CompanyId) {
         try {
             PreparedStatement st2 = _con.prepareStatement("INSERT INTO Purchases(Amount, Currency, DatePurchased, PersonId, CompanyId)" +
                     "VALUES (?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
 
             float f_amount = Float.parseFloat(Amount);
-            SimpleDateFormat formatter1=new SimpleDateFormat("MM/dd/yy kk:mm");
+            SimpleDateFormat formatter1=new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
             Date date1=formatter1.parse(DatePurchased);
             java.sql.Date sqlDate = new java.sql.Date(date1.getTime());
 
@@ -109,8 +114,20 @@ public class Sql {
         }
     }
 
+    // function to insert a record into the table Personal information
     public void PersonalInformationInsert(String Street, String Country, String City, String ZipCode, String SSN, int PersonId) {
         try {
+            PreparedStatement st4 = _con.prepareStatement("INSERT INTO PersonalInformation(Street, Country, City, ZipCode, SSN, PersonId)" +
+                    "VALUES (?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+
+
+            st4.setString(1, Street);
+            st4.setString(2, Country);
+            st4.setString(3, City);
+            st4.setString(4, ZipCode);
+            st4.setString(5, SSN);
+            st4.setInt(6, PersonId);
+            st4.executeUpdate();
 
         }
         catch (Exception e){

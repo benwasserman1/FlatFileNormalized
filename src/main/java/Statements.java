@@ -5,6 +5,7 @@ public class Statements {
 
     private Connection getSqlConnection;
 
+    // function to create the sql connection
     public static Connection getMySqlConnection ()
     {
         Connection mySqlConnection = null;

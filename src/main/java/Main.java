@@ -16,7 +16,7 @@ public class Main {
             // get SQL connection
             conn = Statements.getMySqlConnection();
 
-            CSVParser parser = new CSVParser("/Users/benjaminwasserman/IdeaProjects/Database3/src/main/java/ass3.csv", conn);
+            CSVParser parser = new CSVParser("src/main/java/ass3.csv", conn);
 
             // Run CSV parse
             parser.parseCSV();

@@ -11,24 +11,29 @@ public class CSVParser {
     private String _fileName;
     private Connection _con;
 
+    // default constructor
     public CSVParser(){
         _fileName = null;
         _con = null;
     }
 
+    // overloaded constructor
     public CSVParser(String fileName, Connection con){
         _fileName = fileName;
         _con = con;
     }
 
+    // getter
     public String getFileName(){
         return this._fileName;
     }
 
+    // setter
     public void setFileName(String fileName) {
         this._fileName = fileName;
     }
 
+    // function to parse the CSV and call functions to insert into the tables
     public void parseCSV() {
         try{
 
@@ -39,6 +44,7 @@ public class CSVParser {
             // instantiate sql class
             Sql query = new Sql(_con);
 
+            // get the attributes for each record
             for (CSVRecord record: records){
                 String Name = record.get(0);
                 String Email = record.get(1);
