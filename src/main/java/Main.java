@@ -26,16 +26,6 @@ public class Main {
                 conn = Statements.getMySqlConnection();
             }
 
-            /*
-            st = conn.createStatement();
-            rs = st.executeQuery("Select * from Table");
-            */
-
-            /*
-            while (rs.next()) {
-                //System.out.println("Id is: " + rs.getString(columnindex: 1));
-            }
-            */
         }
         catch(Exception e){
             System.out.println(e.getMessage());

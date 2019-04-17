@@ -16,6 +16,12 @@ def main(tuples):
     with open("ass3.csv", mode='w') as flat_file:
         file_writer = csv.writer(flat_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 
+        try:
+            int(tuples)
+        except ValueError:
+            print("Enter a number as the command line argument")
+            sys.exit()
+
         # write out
         for i in range(int(tuples)):
             name = fake.name()
@@ -39,5 +45,12 @@ def main(tuples):
         
 # call main function with the number of records as a command line argument
 if __name__ == "__main__":
-    main(sys.argv[1])
+    callmain = True
+    while callmain is True:
+        if len(sys.argv) == 2:
+            main(sys.argv[1])
+            callmain = False
+        else:
+            print("Enter the number of records as a command line argument")
+            sys.exit()
 
